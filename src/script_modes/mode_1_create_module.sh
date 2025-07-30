@@ -121,7 +121,33 @@ EOM
   render_template "${templates_dir}/usecase.template"            "$FILE_DOMAIN_FEATURE_USECASE"
   render_template "${templates_dir}/state.template"              "$FILE_PRES_FEATURE_CUBIT_STATE"
   render_template "${templates_dir}/cubit.template"              "$FILE_PRES_FEATURE_CUBIT"
-  render_template "${templates_dir}/view.template"               "$FILE_PRES_FEATURE_SCREEN_VIEW"
+  
+  # --- Special Handling for Screen View with AI Integration ---
+  # Call the centralized AI function to get the UI body code (either from AI or a default).
+  UI_BODY_CODE=$(run_ai_generation "$FEATURE_NAME_PASCAL")
+
+  # Now, create the view file directly using a cat <<EOF block, which handles multi-line code correctly.
+  cat <<EOF > "$FILE_PRES_FEATURE_SCREEN_VIEW"
+import 'package:core/core.dart';
+import 'package:flutter/material.dart';
+import 'package:ui_components/ui_components.dart';
+import '../../cubits/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_cubit.dart';
+
+class ${FEATURE_NAME_PASCAL}ScreenView extends BaseView<${FEATURE_NAME_PASCAL}Cubit> {
+  static const String id = '/${FEATURE_NAME_PASCAL}ScreenView';
+  const ${FEATURE_NAME_PASCAL}ScreenView({super.key});
+  @override
+  PreferredSizeWidget? appBar(BuildContext context) => AppBar(title: Text('${FEATURE_NAME_PASCAL} Screen'));
+  @override
+  Widget body(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.whiteColor,
+      body: ${UI_BODY_CODE}
+    );
+  }
+}
+EOF
+  echo "Created: $FILE_PRES_FEATURE_SCREEN_VIEW"
   
   echo ""
   echo "✅ Flutter module '$MODULE_NAME_SNAKE' and initial feature '$FEATURE_NAME_SNAKE' created successfully."

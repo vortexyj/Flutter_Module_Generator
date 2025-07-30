@@ -5,6 +5,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
 # Source (include) our other script files from their new locations.
 source "${SCRIPT_DIR}/src/functions.sh"
+source "${SCRIPT_DIR}/src/ai_integration.sh"
 source "${SCRIPT_DIR}/src/script_modes/mode_1_create_module.sh"
 source "${SCRIPT_DIR}/src/script_modes/mode_2_add_feature.sh"
 

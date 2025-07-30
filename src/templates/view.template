@@ -10,6 +10,9 @@ class ${FEATURE_NAME_PASCAL}ScreenView extends BaseView<${FEATURE_NAME_PASCAL}Cu
   PreferredSizeWidget? appBar(BuildContext context) => AppBar(title: Text('${FEATURE_NAME_PASCAL} Screen'));
   @override
   Widget body(BuildContext context) {
-    return Scaffold(backgroundColor: AppColors.whiteColor, body: Center(child: Text('Content for ${FEATURE_NAME_PASCAL}ScreenView')));
+   return Scaffold(
+      backgroundColor: AppColors.whiteColor,
+      body: ${UI_BODY_CODE}
+    );
   }
 }

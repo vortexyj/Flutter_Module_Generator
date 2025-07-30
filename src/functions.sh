@@ -14,8 +14,7 @@ pascal_to_camel_case() {
 }
 
 # --- Helper Function for Creating Files from Templates ---
-
-# Reads a template file, replaces all variable placeholders, and saves it to the destination.
+# This new function reads a template file, replaces all variables, and saves it to the destination.
 render_template() {
     local template_path="$1"
     local destination_path="$2"
@@ -26,17 +25,17 @@ render_template() {
     fi
 
     # Read the template and use sed to replace all variable placeholders
-    sed -e "s/\${MODULE_NAME_SNAKE}/${MODULE_NAME_SNAKE}/g" \
-        -e "s/\${MODULE_NAME_PASCAL}/${MODULE_NAME_PASCAL}/g" \
-        -e "s/\${MODULE_NAME_CAMEL}/${MODULE_NAME_CAMEL}/g" \
-        -e "s/\${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}/g" \
-        -e "s/\${FEATURE_NAME_PASCAL}/${FEATURE_NAME_PASCAL}/g" \
-        -e "s/\${FEATURE_NAME_CAMEL}/${FEATURE_NAME_CAMEL}/g" \
+    sed -e "s|\${MODULE_NAME_SNAKE}|${MODULE_NAME_SNAKE}|g" \
+        -e "s|\${MODULE_NAME_PASCAL}|${MODULE_NAME_PASCAL}|g" \
+        -e "s|\${MODULE_NAME_CAMEL}|${MODULE_NAME_CAMEL}|g" \
+        -e "s|\${FEATURE_NAME_SNAKE}|${FEATURE_NAME_SNAKE}|g" \
+        -e "s|\${FEATURE_NAME_PASCAL}|${FEATURE_NAME_PASCAL}|g" \
+        -e "s|\${FEATURE_NAME_CAMEL}|${FEATURE_NAME_CAMEL}|g" \
+        -e "s|\${UI_BODY_CODE}|${UI_BODY_CODE}|g" \
         "$template_path" > "$destination_path"
-    
+
     echo "Created: $destination_path"
 }
-
 # --- Helper Functions for Modifying Existing Files (for Mode 2) ---
 
 insert_before() {
