@@ -1,0 +1,30 @@
+import 'package:core/utils/animations.dart';
+import 'package:flutter/material.dart';
+import 'presentation/Ui/screens/${FEATURE_NAME_SNAKE}_screen_view.dart';
+// [Adding_new_router_import_here_dont_remove_this_command_!!!]
+
+class ${MODULE_NAME_PASCAL}ScreenRouter {
+  ${MODULE_NAME_PASCAL}ScreenRouter._();
+
+  static Route? onGenerateRoute(RouteSettings routeSettings) {
+    switch (routeSettings.name) {
+      case ${FEATURE_NAME_PASCAL}ScreenView.id:
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const ${FEATURE_NAME_PASCAL}ScreenView(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return AppAnimations.slideAnimation(animation, child);
+          },
+        );
+      // [Adding_new_router_case_here_dont_remove_this_command_!!!]
+      default:
+        return null; 
+    }
+  }
+}
+
+class ${MODULE_NAME_PASCAL}Screens {
+  ${MODULE_NAME_PASCAL}Screens._();
+  static const String ${FEATURE_NAME_CAMEL}Screen = ${FEATURE_NAME_PASCAL}ScreenView.id;
+  // [Adding_new_router_screen_id_here_dont_remove_this_command_!!!]
+}

@@ -1,0 +1,25 @@
+import 'package:core/core.dart';
+import 'package:core/packages/dartz/dartz.dart';
+import 'package:failures/failures.dart';
+import 'package:local_storage/local_storage.dart';
+import '../../../data/models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';
+import '../../../data/models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_response_model.dart';
+import '../../../domain/${MODULE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase.dart';
+part '${FEATURE_NAME_SNAKE}_state.dart';
+
+class ${FEATURE_NAME_PASCAL}Cubit extends BaseCubit<${FEATURE_NAME_PASCAL}State> {
+  final LocalStorage localStorage;
+  final ${FEATURE_NAME_PASCAL}UseCase ${FEATURE_NAME_CAMEL}UseCase;
+
+${FEATURE_NAME_PASCAL}Cubit(this.localStorage, this.${FEATURE_NAME_CAMEL}UseCase)
+      : super(const ${FEATURE_NAME_PASCAL}State());
+  @override
+  Future<void> initState() async {}
+
+  Future<void> get${FEATURE_NAME_PASCAL}() async {
+    emit(state.copyWith(screenLoading: true));
+    final Either<Failure, ${FEATURE_NAME_PASCAL}Response> response =
+        await ${FEATURE_NAME_CAMEL}UseCase.call(${FEATURE_NAME_PASCAL}RequestModel());
+    response.fold((failure) => emit(state.copyWith(failure: failure, screenLoading: false)), (data) => emit(state.copyWith(featureData: data, screenLoading: false)));
+  }
+}

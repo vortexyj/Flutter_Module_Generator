@@ -1,0 +1,29 @@
+import 'package:core/core.dart';
+import 'package:get_it/get_it.dart';
+import '../domain/${MODULE_NAME_SNAKE}_repository/${MODULE_NAME_SNAKE}_repository.dart';
+import '../domain/${MODULE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase.dart';
+import '../data/${MODULE_NAME_SNAKE}_repository/${MODULE_NAME_SNAKE}_repository_impl.dart';
+import '../data/remote_data_source/${MODULE_NAME_SNAKE}_remote_data_source.dart';
+import '../presentation/cubits/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_cubit.dart';
+// [Adding_new_di_import_here_dont_remove_this_command_!!!]
+
+final di = GetIt.instance;
+
+class ${MODULE_NAME_PASCAL}DI {
+  ${MODULE_NAME_PASCAL}DI() {
+    call();
+  }
+
+  void call() {
+    di
+      ..registerFactory<${MODULE_NAME_PASCAL}RemoteDataSource>(
+          () => ${MODULE_NAME_PASCAL}RemoteDataSourceImpl(network: di()))
+      ..registerFactory<${MODULE_NAME_PASCAL}Repository>(() => ${MODULE_NAME_PASCAL}RepositoryImpl(
+            authRemoteDataSource: di(),
+          ))
+      ..registerFactory(() => ${FEATURE_NAME_PASCAL}UseCase(repository: di()))
+      ..registerFactory(() => ${FEATURE_NAME_PASCAL}Cubit(di(),di()))
+      // [Adding_new_di_dependency_here_dont_remove_this_command_!!!]
+      ;
+  }
+}
