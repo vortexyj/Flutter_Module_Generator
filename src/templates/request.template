@@ -1,0 +1,10 @@
+import 'package:network/network.dart';
+import './${FEATURE_NAME_SNAKE}_request_model.dart';
+
+class ${FEATURE_NAME_PASCAL}Request with Request, PostRequest {
+  const ${FEATURE_NAME_PASCAL}Request(this.requestModel);
+  @override
+  final ${FEATURE_NAME_PASCAL}RequestModel requestModel;
+  @override
+  String get path => '/${FEATURE_NAME_SNAKE}';
+}

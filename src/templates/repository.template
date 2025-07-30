@@ -1,0 +1,11 @@
+import 'package:core/packages/dartz/dartz.dart';
+import 'package:failures/failures.dart';
+import '../../data/models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';
+import '../../data/models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_response_model.dart';
+// [Adding_new_model_import_here_dont_remove_this_command_!!!]
+
+abstract class ${MODULE_NAME_PASCAL}Repository {
+  Future<Either<Failure, ${FEATURE_NAME_PASCAL}Response>> ${FEATURE_NAME_SNAKE}(
+      {required ${FEATURE_NAME_PASCAL}RequestModel ${FEATURE_NAME_SNAKE}Data});
+  // [Adding_new_repo_method_here_dont_remove_this_command_!!!]
+}

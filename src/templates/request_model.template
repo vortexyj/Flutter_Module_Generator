@@ -1,0 +1,9 @@
+import 'package:network/network.dart';
+
+class ${FEATURE_NAME_PASCAL}RequestModel extends RequestModel {
+  ${FEATURE_NAME_PASCAL}RequestModel({RequestProgressListener? progressListener}) : super(progressListener);
+  @override
+  Future<Map<String, dynamic>> toMap() async => {};
+  @override
+  List<Object?> get props => [];
+}

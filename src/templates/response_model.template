@@ -1,0 +1,5 @@
+class ${FEATURE_NAME_PASCAL}Response {
+  ${FEATURE_NAME_PASCAL}Response();
+  factory ${FEATURE_NAME_PASCAL}Response.fromJson(Map<String, dynamic> json) => ${FEATURE_NAME_PASCAL}Response();
+  Map<String, dynamic> toJson() => {};
+}
