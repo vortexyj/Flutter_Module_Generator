@@ -136,7 +136,7 @@ EOM
       case ${FEATURE_NAME_PASCAL}ScreenView.id:
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
-              const ${FEATURE_NAME_PASCAL}ScreenView(),
+               ${FEATURE_NAME_PASCAL}ScreenView(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return AppAnimations.slideAnimation(animation, child);
           },

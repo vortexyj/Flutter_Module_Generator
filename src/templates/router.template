@@ -1,4 +1,4 @@
-import 'package:core/utils/animations.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'presentation/Ui/screens/${FEATURE_NAME_SNAKE}_screen_view.dart';
 // [Adding_new_router_import_here_dont_remove_this_command_!!!]
@@ -11,7 +11,7 @@ class ${MODULE_NAME_PASCAL}ScreenRouter {
       case ${FEATURE_NAME_PASCAL}ScreenView.id:
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
-              const ${FEATURE_NAME_PASCAL}ScreenView(),
+               ${FEATURE_NAME_PASCAL}ScreenView(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return AppAnimations.slideAnimation(animation, child);
           },

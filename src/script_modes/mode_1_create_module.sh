@@ -28,7 +28,6 @@ run_create_mode() {
   
   PUBSPEC_FILE="./pubspec.yaml"
   TEST_FILE_PATH="./test/${MODULE_NAME_SNAKE}_test.dart"
-
   read -r -d '' DEPENDENCIES << EOM
 
   ### MODULES
@@ -40,6 +39,8 @@ run_create_mode() {
     path: ../ui_components
   local_storage:
     path: ../local_storage
+  el_magico:
+    path: ../el_magico
 EOM
 
   insert_after "$PUBSPEC_FILE" "sdk: flutter" "$DEPENDENCIES"
@@ -135,13 +136,13 @@ import '../../cubits/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_cubit.dart';
 
 class ${FEATURE_NAME_PASCAL}ScreenView extends BaseView<${FEATURE_NAME_PASCAL}Cubit> {
   static const String id = '/${FEATURE_NAME_PASCAL}ScreenView';
-  const ${FEATURE_NAME_PASCAL}ScreenView({super.key});
+  ${FEATURE_NAME_PASCAL}ScreenView({super.key});
   @override
   PreferredSizeWidget? appBar(BuildContext context) => AppBar(title: Text('${FEATURE_NAME_PASCAL} Screen'));
   @override
   Widget body(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: AppColors.backgroundColor,
       body: ${UI_BODY_CODE}
     );
   }

@@ -5,13 +5,13 @@ import '../../cubits/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_cubit.dart';
 
 class ${FEATURE_NAME_PASCAL}ScreenView extends BaseView<${FEATURE_NAME_PASCAL}Cubit> {
   static const String id = '/${FEATURE_NAME_PASCAL}ScreenView';
-  const ${FEATURE_NAME_PASCAL}ScreenView({super.key});
+   ${FEATURE_NAME_PASCAL}ScreenView({super.key});
   @override
   PreferredSizeWidget? appBar(BuildContext context) => AppBar(title: Text('${FEATURE_NAME_PASCAL} Screen'));
   @override
   Widget body(BuildContext context) {
    return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: AppColors.backgroundColor,
       body: ${UI_BODY_CODE}
     );
   }

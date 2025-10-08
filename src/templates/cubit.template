@@ -17,9 +17,9 @@ ${FEATURE_NAME_PASCAL}Cubit(this.localStorage, this.${FEATURE_NAME_CAMEL}UseCase
   Future<void> initState() async {}
 
   Future<void> get${FEATURE_NAME_PASCAL}() async {
-    emit(state.copyWith(screenLoading: true));
+    emit(state.copyWith(pageState: PageState.loading));
     final Either<Failure, ${FEATURE_NAME_PASCAL}Response> response =
         await ${FEATURE_NAME_CAMEL}UseCase.call(${FEATURE_NAME_PASCAL}RequestModel());
-    response.fold((failure) => emit(state.copyWith(failure: failure, screenLoading: false)), (data) => emit(state.copyWith(featureData: data, screenLoading: false)));
+    response.fold((failure) => emit(state.copyWith(failure: failure, pageState: PageState.errorWithDialog)), (data) => emit(state.copyWith(featureData: data, pageState: PageState.success)));
   }
 }

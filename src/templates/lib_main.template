@@ -1,1 +1,2 @@
 export './${MODULE_NAME_SNAKE}_screen_router.dart';
+export 'di/${MODULE_NAME_SNAKE}_di.dart';
