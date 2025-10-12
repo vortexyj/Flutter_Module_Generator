@@ -36,6 +36,24 @@ render_template() {
 
     echo "Created: $destination_path"
 }
+
+# Renders a partial template and returns the content as a string
+render_partial() {
+    local template_path="$1"
+    if [ ! -f "$template_path" ]; then
+        echo "[ERROR] Partial template file not found: $template_path"
+        return 1
+    fi
+
+    # Read the template, substitute variables, and echo the result to be captured in a variable
+    sed -e "s/\${MODULE_NAME_SNAKE}/${MODULE_NAME_SNAKE}/g" \
+        -e "s/\${MODULE_NAME_PASCAL}/${MODULE_NAME_PASCAL}/g" \
+        -e "s/\${MODULE_NAME_CAMEL}/${MODULE_NAME_CAMEL}/g" \
+        -e "s/\${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}/g" \
+        -e "s/\${FEATURE_NAME_PASCAL}/${FEATURE_NAME_PASCAL}/g" \
+        -e "s/\${FEATURE_NAME_CAMEL}/${FEATURE_NAME_CAMEL}/g" \
+        "$template_path"
+}
 # --- Helper Functions for Modifying Existing Files (for Mode 2) ---
 
 insert_before() {

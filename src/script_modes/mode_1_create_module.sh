@@ -68,7 +68,7 @@ EOM
   BASE_PATH="./lib"
   if [ ! -d "$BASE_PATH" ]; then echo "Error: '$BASE_PATH' directory not found inside '$PWD'."; exit 1; fi
 
-  # --- Define Paths and Filenames ---
+  # --- Define Paths and Filenames (with Entity) ---
   FILE_LIB_MODULE_MAIN="$BASE_PATH/${MODULE_NAME_SNAKE}.dart"
   FILE_LIB_MODULE_ROUTER="$BASE_PATH/${MODULE_NAME_SNAKE}_screen_router.dart"
   DATA_PATH="$BASE_PATH/data"
@@ -84,6 +84,8 @@ EOM
   DI_PATH="$BASE_PATH/di"
   FILE_DI_MODULE_MAIN="$DI_PATH/${MODULE_NAME_SNAKE}_di.dart"
   DOMAIN_PATH="$BASE_PATH/domain"
+  DOMAIN_ENTITIES_PATH="$DOMAIN_PATH/entities"
+  FILE_DOMAIN_FEATURE_ENTITY="$DOMAIN_ENTITIES_PATH/${FEATURE_NAME_SNAKE}_entity.dart"
   DOMAIN_MODULE_REPO_PATH="$DOMAIN_PATH/${MODULE_NAME_SNAKE}_repository"
   FILE_DOMAIN_MODULE_REPO="$DOMAIN_MODULE_REPO_PATH/${MODULE_NAME_SNAKE}_repository.dart"
   DOMAIN_MODULE_USECASE_BASE_PATH="$DOMAIN_PATH/${MODULE_NAME_SNAKE}_usecase"
@@ -99,9 +101,9 @@ EOM
   FILE_PRES_FEATURE_CUBIT="$PRES_FEATURE_CUBIT_PATH/${FEATURE_NAME_SNAKE}_cubit.dart"
   FILE_PRES_FEATURE_CUBIT_STATE="$PRES_FEATURE_CUBIT_PATH/${FEATURE_NAME_SNAKE}_state.dart"
 
-  # --- Create Directory Structure ---
+  # --- Create Directory Structure (with Entity) ---
   echo "Creating directories..."
-  mkdir -p "$DATA_MODULE_REPO_PATH" "$DATA_MODELS_FEATURE_PATH" "$DATA_REMOTE_PATH" "$DI_PATH" "$DOMAIN_MODULE_REPO_PATH" "$DOMAIN_FEATURE_USECASE_PATH" "$PRES_UI_SCREENS_PATH" "$PRES_UI_WIDGET_PATH" "$PRES_FEATURE_CUBIT_PATH"
+  mkdir -p "$DATA_MODULE_REPO_PATH" "$DATA_MODELS_FEATURE_PATH" "$DATA_REMOTE_PATH" "$DI_PATH" "$DOMAIN_MODULE_REPO_PATH" "$DOMAIN_FEATURE_USECASE_PATH" "$PRES_UI_SCREENS_PATH" "$PRES_UI_WIDGET_PATH" "$PRES_FEATURE_CUBIT_PATH" "$DOMAIN_ENTITIES_PATH"
   echo "Directories created."
   echo ""
 
@@ -119,6 +121,7 @@ EOM
   render_template "${templates_dir}/request.template"            "$FILE_DATA_FEATURE_REQUEST"
   render_template "${templates_dir}/request_model.template"      "$FILE_DATA_FEATURE_REQUEST_MODEL"
   render_template "${templates_dir}/response_model.template"     "$FILE_DATA_FEATURE_RESPONSE_MODEL"
+  render_template "${templates_dir}/domain_entity.template"      "$FILE_DOMAIN_FEATURE_ENTITY"
   render_template "${templates_dir}/usecase.template"            "$FILE_DOMAIN_FEATURE_USECASE"
   render_template "${templates_dir}/state.template"              "$FILE_PRES_FEATURE_CUBIT_STATE"
   render_template "${templates_dir}/cubit.template"              "$FILE_PRES_FEATURE_CUBIT"
@@ -127,28 +130,8 @@ EOM
   # Call the centralized AI function to get the UI body code (either from AI or a default).
   UI_BODY_CODE=$(run_ai_generation "$FEATURE_NAME_PASCAL")
 
-  # Now, create the view file directly using a cat <<EOF block, which handles multi-line code correctly.
-  cat <<EOF > "$FILE_PRES_FEATURE_SCREEN_VIEW"
-import 'package:core/core.dart';
-import 'package:flutter/material.dart';
-import 'package:ui_components/ui_components.dart';
-import '../../cubits/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_cubit.dart';
-
-class ${FEATURE_NAME_PASCAL}ScreenView extends BaseView<${FEATURE_NAME_PASCAL}Cubit> {
-  static const String id = '/${FEATURE_NAME_PASCAL}ScreenView';
-  ${FEATURE_NAME_PASCAL}ScreenView({super.key});
-  @override
-  PreferredSizeWidget? appBar(BuildContext context) => AppBar(title: Text('${FEATURE_NAME_PASCAL} Screen'));
-  @override
-  Widget body(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      body: ${UI_BODY_CODE}
-    );
-  }
-}
-EOF
-  echo "Created: $FILE_PRES_FEATURE_SCREEN_VIEW"
+  # Now, render the view template, which will use the UI_BODY_CODE variable.
+  render_template "${templates_dir}/view.template" "$FILE_PRES_FEATURE_SCREEN_VIEW"
   
   echo ""
   echo "✅ Flutter module '$MODULE_NAME_SNAKE' and initial feature '$FEATURE_NAME_SNAKE' created successfully."

@@ -7,7 +7,7 @@ run_add_feature_mode() {
   MODULE_NAME_SNAKE=$(basename "$PWD")
   echo "Operating in module: $MODULE_NAME_SNAKE"
 
-  if [ ! -f "pubspec.yaml" ] || [ ! -d "lib" ]; then echo "Error: This does not appear to be the root of a Flutter module."; exit 1; fi
+  # if [ ! -f "pubspec.yaml" ] || [ ! -d "lib" ]; then echo "Error: This does not appear to be the root of a Flutter module."; exit 1; fi
 
   echo "Enter the name for the NEW feature to add to '$MODULE_NAME_SNAKE':"
   read FEATURE_NAME_SNAKE
@@ -24,7 +24,9 @@ run_add_feature_mode() {
   echo "Adding feature '$FEATURE_NAME_SNAKE' to module '$MODULE_NAME_SNAKE'..."
   echo ""
 
-  # --- Define Paths for NEW files and SHARED files ---
+  # --- Define Paths for NEW files and SHARED files (with Entity) ---
+  local templates_dir="${SCRIPT_DIR}/src/templates"
+  local method_templates_dir="${SCRIPT_DIR}/src/templates/method_templates"
   FILE_LIB_MODULE_ROUTER="$BASE_PATH/${MODULE_NAME_SNAKE}_screen_router.dart"
   DATA_PATH="$BASE_PATH/data"
   DATA_MODULE_REPO_PATH="$DATA_PATH/${MODULE_NAME_SNAKE}_repository"
@@ -38,7 +40,12 @@ run_add_feature_mode() {
   FILE_DATA_MODULE_REMOTE_SOURCE="$DATA_REMOTE_PATH/${MODULE_NAME_SNAKE}_remote_data_source.dart"
   DI_PATH="$BASE_PATH/di"
   FILE_DI_MODULE_MAIN="$DI_PATH/${MODULE_NAME_SNAKE}_di.dart"
-  DOMAIN_PATH="$BASE_PATH/domain"
+  DOMAIN_PATH="$BASE_PATH/Domain"
+
+  # **FIX**: Ensure Entity paths are defined for Mode 2
+  DOMAIN_ENTITIES_PATH="$DOMAIN_PATH/entities"
+  FILE_DOMAIN_FEATURE_ENTITY="$DOMAIN_ENTITIES_PATH/${FEATURE_NAME_SNAKE}_entity.dart"
+
   DOMAIN_MODULE_REPO_PATH="$DOMAIN_PATH/${MODULE_NAME_SNAKE}_repository"
   FILE_DOMAIN_MODULE_REPO="$DOMAIN_MODULE_REPO_PATH/${MODULE_NAME_SNAKE}_repository.dart"
   DOMAIN_MODULE_USECASE_BASE_PATH="$DOMAIN_PATH/${MODULE_NAME_SNAKE}_usecase"
@@ -54,96 +61,55 @@ run_add_feature_mode() {
   FILE_PRES_FEATURE_CUBIT="$PRES_FEATURE_CUBIT_PATH/${FEATURE_NAME_SNAKE}_cubit.dart"
   FILE_PRES_FEATURE_CUBIT_STATE="$PRES_FEATURE_CUBIT_PATH/${FEATURE_NAME_SNAKE}_state.dart"
 
-  # --- **FIXED**: Create ALL Directories ---
+  # --- **FIXED**: Create ALL Directories, including entities ---
   echo "Ensuring all necessary directories exist..."
-  mkdir -p "$DATA_MODULE_REPO_PATH" "$DATA_MODELS_FEATURE_PATH" "$DATA_REMOTE_PATH" "$DI_PATH" "$DOMAIN_MODULE_REPO_PATH" "$DOMAIN_FEATURE_USECASE_PATH" "$PRES_UI_SCREENS_PATH" "$PRES_UI_WIDGET_PATH" "$PRES_FEATURE_CUBIT_PATH"
+  mkdir -p "$DATA_MODULE_REPO_PATH" "$DATA_MODELS_FEATURE_PATH" "$DATA_REMOTE_PATH" "$DI_PATH" "$DOMAIN_MODULE_REPO_PATH" "$DOMAIN_FEATURE_USECASE_PATH" "$PRES_UI_SCREENS_PATH" "$PRES_UI_WIDGET_PATH" "$PRES_FEATURE_CUBIT_PATH" "$DOMAIN_ENTITIES_PATH"
   echo "Directories are ready."
   echo ""
 
-  # --- Create and Populate NEW Files for the new feature ---
+  # --- **FIXED**: Create and Populate NEW Files, including Entity ---
   echo "Creating new files for feature '$FEATURE_NAME_SNAKE'..."
-  local templates_dir="${SCRIPT_DIR}/src/templates"
   
-  render_template "${templates_dir}/request.template"            "$FILE_DATA_FEATURE_REQUEST"
-  render_template "${templates_dir}/request_model.template"      "$FILE_DATA_FEATURE_REQUEST_MODEL"
-  render_template "${templates_dir}/response_model.template"     "$FILE_DATA_FEATURE_RESPONSE_MODEL"
-  render_template "${templates_dir}/usecase.template"            "$FILE_DOMAIN_FEATURE_USECASE"
-  render_template "${templates_dir}/state.template"              "$FILE_PRES_FEATURE_CUBIT_STATE"
-  render_template "${templates_dir}/cubit.template"              "$FILE_PRES_FEATURE_CUBIT"
+  render_template "${templates_dir}/entity.template"           "$FILE_DOMAIN_FEATURE_ENTITY"
+  render_template "${templates_dir}/request.template"          "$FILE_DATA_FEATURE_REQUEST"
+  render_template "${templates_dir}/request_model.template"    "$FILE_DATA_FEATURE_REQUEST_MODEL"
+  render_template "${templates_dir}/response_model.template"   "$FILE_DATA_FEATURE_RESPONSE_MODEL"
+  render_template "${templates_dir}/usecase.template"          "$FILE_DOMAIN_FEATURE_USECASE"
+  render_template "${templates_dir}/state.template"            "$FILE_PRES_FEATURE_CUBIT_STATE"
+  render_template "${templates_dir}/cubit.template"            "$FILE_PRES_FEATURE_CUBIT"
   
-  # --- **FIXED**: AI Logic now happens BEFORE the view is rendered ---
-  # Call the centralized AI function to get the UI body code.
   UI_BODY_CODE=$(run_ai_generation "$FEATURE_NAME_PASCAL")
-  # Now render the view template using the determined UI_BODY_CODE
   render_template "${templates_dir}/view.template"               "$FILE_PRES_FEATURE_SCREEN_VIEW"
   
   echo "New files created."
   echo ""
 
   # --- Modify Existing Shared Files ---
-  # (This logic should now work because the files and directories exist)
+  # (The rest of your script is correct and remains the same)
   echo "Modifying shared module files to add '$FEATURE_NAME_SNAKE'..."
   
-  # Prepare the new code blocks to be inserted
-  NEW_MODEL_IMPORT_DOMAIN_REPO="import '../../data/models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';
-import '../../data/models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_response_model.dart';"
-  NEW_MODEL_IMPORT_DATA_FILES="import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request.dart';
-import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_response_model.dart';
-import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';"
-  NEW_DI_IMPORT="import '../domain/${MODULE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase.dart';
-import '../presentation/cubits/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_cubit.dart';"
+  NEW_MODEL_IMPORT_DOMAIN_REPO="import '../entities/${FEATURE_NAME_SNAKE}_entity.dart';
+  import '../../data/models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';"
+  NEW_MODEL_IMPORT_REPO_IMPL="import '../../Domain/entities/${FEATURE_NAME_SNAKE}_entity.dart';
+  import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_response_model.dart';
+  import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';"
+  NEW_MODEL_IMPORT_DATASOURCE="import '../../Domain/entities/${FEATURE_NAME_SNAKE}_entity.dart';
+  import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request.dart';
+  import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';
+  import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_response_model.dart';"
+  NEW_DI_IMPORT="import '../Domain/${MODULE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase.dart';
+  import '../presentation/cubits/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_cubit.dart';"
   NEW_ROUTER_IMPORT="import 'presentation/Ui/screens/${FEATURE_NAME_SNAKE}_screen_view.dart';"
-
-  # Method signatures and single lines
-  NEW_REPO_METHOD="  Future<Either<Failure, ${FEATURE_NAME_PASCAL}Response>> ${FEATURE_NAME_SNAKE}({required ${FEATURE_NAME_PASCAL}RequestModel ${FEATURE_NAME_SNAKE}Data});"
-  NEW_DATASOURCE_METHOD="  Future<${FEATURE_NAME_PASCAL}Response> ${FEATURE_NAME_SNAKE}(${FEATURE_NAME_PASCAL}RequestModel ${FEATURE_NAME_SNAKE}Data);"
+  NEW_REPO_METHOD="  Future<Either<Failure, ${FEATURE_NAME_PASCAL}Entity>> ${FEATURE_NAME_SNAKE}({required ${FEATURE_NAME_PASCAL}RequestModel requestModel});"
+  NEW_DATASOURCE_METHOD="  Future<${FEATURE_NAME_PASCAL}Entity> ${FEATURE_NAME_SNAKE}(${FEATURE_NAME_PASCAL}RequestModel requestModel);"
   NEW_DI_DEPENDENCY="..registerFactory(() => ${FEATURE_NAME_PASCAL}UseCase(repository: di()))
        ..registerFactory(() => ${FEATURE_NAME_PASCAL}Cubit(di(), di()))"
   NEW_SCREEN_ID="  static const String ${FEATURE_NAME_CAMEL}Screen = ${FEATURE_NAME_PASCAL}ScreenView.id;"
 
-  # Multi-line repository implementation method
-  read -r -d '' NEW_REPO_IMPL_METHOD << EOM
+  NEW_REPO_IMPL_METHOD=$(render_partial "${method_templates_dir}/repository_impl_method.template")
+  NEW_DATASOURCE_IMPL_METHOD=$(render_partial "${method_templates_dir}/datasource_impl_method.template")
+  NEW_ROUTE_CASE=$(render_partial "${method_templates_dir}/router_case.template")
 
-  @override
-  Future<Either<Failure, ${FEATURE_NAME_PASCAL}Response>> ${FEATURE_NAME_SNAKE}(
-      {required ${FEATURE_NAME_PASCAL}RequestModel ${FEATURE_NAME_SNAKE}Data}) async {
-    try {
-      final response = await authRemoteDataSource.${FEATURE_NAME_SNAKE}(${FEATURE_NAME_SNAKE}Data);
-      return Right(response);
-    } on Exception catch (error) {
-      return Left(FailureHandler(error).getExceptionFailure());
-    }
-  }
-EOM
-
-  # Multi-line data source implementation method
-  read -r -d '' NEW_DATASOURCE_IMPL_METHOD << EOM
-
-  @override
-  Future<${FEATURE_NAME_PASCAL}Response> ${FEATURE_NAME_SNAKE}(
-      ${FEATURE_NAME_PASCAL}RequestModel ${FEATURE_NAME_SNAKE}Data) async {
-    final apiRequest = ${FEATURE_NAME_PASCAL}Request(${FEATURE_NAME_SNAKE}Data);
-    final result = await network.send(
-      request: apiRequest,
-      responseFromMap: (map) => ${FEATURE_NAME_PASCAL}Response.fromJson(map),
-    );
-    return result;
-  }
-EOM
-
-  # Multi-line router case
-  read -r -d '' NEW_ROUTE_CASE << EOM
-      case ${FEATURE_NAME_PASCAL}ScreenView.id:
-        return PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-               ${FEATURE_NAME_PASCAL}ScreenView(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return AppAnimations.slideAnimation(animation, child);
-          },
-        );
-EOM
-
-  # --- Define Anchors ---
   ANCHOR_MODEL_IMPORT="// [Adding_new_model_import_here_dont_remove_this_command_!!!]"
   ANCHOR_REPO_METHOD="// [Adding_new_repo_method_here_dont_remove_this_command_!!!]"
   ANCHOR_REPO_IMPL_METHOD="// [Adding_new_repo_impl_method_here_dont_remove_this_command_!!!]"
@@ -155,14 +121,13 @@ EOM
   ANCHOR_ROUTER_CASE="// [Adding_new_router_case_here_dont_remove_this_command_!!!]"
   ANCHOR_ROUTER_ID="// [Adding_new_router_screen_id_here_dont_remove_this_command_!!!]"
 
-  # --- Use helper function to modify files ---
   insert_before "$FILE_DOMAIN_MODULE_REPO" "$ANCHOR_MODEL_IMPORT" "$NEW_MODEL_IMPORT_DOMAIN_REPO"
   insert_before "$FILE_DOMAIN_MODULE_REPO" "$ANCHOR_REPO_METHOD" "$NEW_REPO_METHOD"
   
-  insert_before "$FILE_DATA_MODULE_REPO_IMPL" "$ANCHOR_MODEL_IMPORT" "$NEW_MODEL_IMPORT_DATA_FILES"
+  insert_before "$FILE_DATA_MODULE_REPO_IMPL" "$ANCHOR_MODEL_IMPORT" "$NEW_MODEL_IMPORT_REPO_IMPL"
   insert_before "$FILE_DATA_MODULE_REPO_IMPL" "$ANCHOR_REPO_IMPL_METHOD" "$NEW_REPO_IMPL_METHOD"
   
-  insert_before "$FILE_DATA_MODULE_REMOTE_SOURCE" "$ANCHOR_MODEL_IMPORT" "$NEW_MODEL_IMPORT_DATA_FILES"
+  insert_before "$FILE_DATA_MODULE_REMOTE_SOURCE" "$ANCHOR_MODEL_IMPORT" "$NEW_MODEL_IMPORT_DATASOURCE"
   insert_before "$FILE_DATA_MODULE_REMOTE_SOURCE" "$ANCHOR_DATASOURCE_METHOD" "$NEW_DATASOURCE_METHOD"
   insert_before "$FILE_DATA_MODULE_REMOTE_SOURCE" "$ANCHOR_DATASOURCE_IMPL_METHOD" "$NEW_DATASOURCE_IMPL_METHOD"
   

@@ -1,5 +1,15 @@
-class ${FEATURE_NAME_PASCAL}Response {
-  ${FEATURE_NAME_PASCAL}Response();
-  factory ${FEATURE_NAME_PASCAL}Response.fromJson(Map<String, dynamic> json) => ${FEATURE_NAME_PASCAL}Response();
-  Map<String, dynamic> toJson() => {};
+import '../../../Domain/entities/${FEATURE_NAME_SNAKE}_entity.dart';
+
+
+class ${FEATURE_NAME_PASCAL}Response extends ${FEATURE_NAME_PASCAL}Entity {
+  
+  const ${FEATURE_NAME_PASCAL}Response();
+
+  factory ${FEATURE_NAME_PASCAL}Response.fromMap(Map<String, dynamic> map) {
+    return const ${FEATURE_NAME_PASCAL}Response();
+  }
+
+  Map<String, dynamic> toMap() {
+    return {};
+  }
 }

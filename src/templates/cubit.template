@@ -3,8 +3,8 @@ import 'package:core/packages/dartz/dartz.dart';
 import 'package:failures/failures.dart';
 import 'package:local_storage/local_storage.dart';
 import '../../../data/models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';
-import '../../../data/models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_response_model.dart';
-import '../../../domain/${MODULE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase.dart';
+import '../../../Domain/entities/${FEATURE_NAME_SNAKE}_entity.dart';
+import '../../../Domain/${MODULE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase.dart';
 part '${FEATURE_NAME_SNAKE}_state.dart';
 
 class ${FEATURE_NAME_PASCAL}Cubit extends BaseCubit<${FEATURE_NAME_PASCAL}State> {
@@ -18,7 +18,7 @@ ${FEATURE_NAME_PASCAL}Cubit(this.localStorage, this.${FEATURE_NAME_CAMEL}UseCase
 
   Future<void> get${FEATURE_NAME_PASCAL}() async {
     emit(state.copyWith(pageState: PageState.loading));
-    final Either<Failure, ${FEATURE_NAME_PASCAL}Response> response =
+    final Either<Failure, ${FEATURE_NAME_PASCAL}Entity> response =
         await ${FEATURE_NAME_CAMEL}UseCase.call(${FEATURE_NAME_PASCAL}RequestModel());
     response.fold((failure) => emit(state.copyWith(failure: failure, pageState: PageState.errorWithDialog)), (data) => emit(state.copyWith(featureData: data, pageState: PageState.success)));
   }

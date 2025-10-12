@@ -1,4 +1,4 @@
-import 'package:network/network.dart';
+import 'package:core/core.dart';
 
 class ${FEATURE_NAME_PASCAL}RequestModel extends RequestModel {
   ${FEATURE_NAME_PASCAL}RequestModel({RequestProgressListener? progressListener}) : super(progressListener);

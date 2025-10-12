@@ -1,16 +1,19 @@
 import 'package:core/packages/dartz/dartz.dart';
 import 'package:core/usecase/usecase.dart';
 import 'package:failures/failures.dart';
-import '../../../../data/models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';
-import '../../../../data/models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_response_model.dart';
+import '../../../data/models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';
+import '../../entities/${FEATURE_NAME_SNAKE}_entity.dart';
 import '../../${MODULE_NAME_SNAKE}_repository/${MODULE_NAME_SNAKE}_repository.dart';
 
 class ${FEATURE_NAME_PASCAL}UseCase
-    implements UseCase<${FEATURE_NAME_PASCAL}Response, ${FEATURE_NAME_PASCAL}RequestModel> {
+    implements UseCase<${FEATURE_NAME_PASCAL}Entity, ${FEATURE_NAME_PASCAL}RequestModel> {
   final ${MODULE_NAME_PASCAL}Repository repository;
   ${FEATURE_NAME_PASCAL}UseCase({required this.repository});
   @override
-  Future<Either<Failure, ${FEATURE_NAME_PASCAL}Response>> call(${FEATURE_NAME_PASCAL}RequestModel params) async {
-    return await repository.${FEATURE_NAME_SNAKE}(${FEATURE_NAME_SNAKE}Data: params);
+  Future<Either<Failure, ${FEATURE_NAME_PASCAL}Entity>> call(${FEATURE_NAME_PASCAL}RequestModel requestModel) async {
+       Either<Failure, ${FEATURE_NAME_PASCAL}Entity> response = await repository.${FEATURE_NAME_SNAKE}(
+      requestModel: requestModel,
+    );
+    return response;
   }
 }
