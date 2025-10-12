@@ -1,0 +1,25 @@
+import 'package:core/packages/dartz/dartz.dart';
+import 'package:failures/failures.dart';
+import '../../domain/${MODULE_NAME_SNAKE}_repository/${MODULE_NAME_SNAKE}_repository.dart';
+import '../remote_data_source/${MODULE_NAME_SNAKE}_remote_data_source.dart';
+import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';
+import '../../domain/entities/${FEATURE_NAME_SNAKE}_entity.dart';
+// [Adding_new_model_import_here_dont_remove_this_command_!!!]
+
+class ${MODULE_NAME_PASCAL}RepositoryImpl implements ${MODULE_NAME_PASCAL}Repository {
+  final ${MODULE_NAME_PASCAL}RemoteDataSource remoteDataSource;
+
+  ${MODULE_NAME_PASCAL}RepositoryImpl({required this.remoteDataSource});
+
+  @override
+  Future<Either<Failure, ${FEATURE_NAME_PASCAL}Entity>> ${FEATURE_NAME_SNAKE}(
+      {required ${FEATURE_NAME_PASCAL}RequestModel requestModel}) async {
+    try {
+      final response = await remoteDataSource.${FEATURE_NAME_SNAKE}(requestModel);
+      return Right(response);
+    } on Exception catch (error) {
+      return Left(FailureHandler(error).getExceptionFailure());
+    }
+  }
+  // [Adding_new_repo_impl_method_here_dont_remove_this_command_!!!]
+}
