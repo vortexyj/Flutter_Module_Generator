@@ -1,0 +1,10 @@
+        @override
+        Future<Either<Failure, ${FEATURE_NAME_PASCAL}Entity>> ${FEATURE_NAME_SNAKE}(
+            {required ${FEATURE_NAME_PASCAL}RequestModel requestModel}) async {
+            try {
+            final response = await remoteDataSource.${FEATURE_NAME_SNAKE}(requestModel);
+            return Right(response);
+            } on Exception catch (error) {
+            return Left(FailureHandler(error).getExceptionFailure());
+            }
+        }

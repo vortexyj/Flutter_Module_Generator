@@ -1,0 +1,9 @@
+import 'package:core/packages/equatable/equatable.dart';
+
+class ${FEATURE_NAME_PASCAL}Entity extends Equatable {
+
+  const ${FEATURE_NAME_PASCAL}Entity();
+
+  @override
+  List<Object?> get props => [];
+}
