@@ -3,8 +3,8 @@
     {
         try {
             final response = await remoteDataSource.${FEATURE_NAME_SNAKE}(requestModel);
-        return Right(response);
+                 return Right(response.result!);
             } on Exception catch (error) {
-        return Left(FailureHandler(error).getExceptionFailure());
+                 return Left(FailureHandler(error).getExceptionFailure());
         }
     }

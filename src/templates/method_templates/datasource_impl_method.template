@@ -1,7 +1,7 @@
     @override
-    Future<${FEATURE_NAME_PASCAL}Entity> ${FEATURE_NAME_SNAKE}( ${FEATURE_NAME_PASCAL}RequestModel requestModel) async {
+    Future<${FEATURE_NAME_PASCAL}Response> ${FEATURE_NAME_SNAKE}( ${FEATURE_NAME_PASCAL}RequestModel requestModel) async {
         final apiRequest = ${FEATURE_NAME_PASCAL}Request(requestModel);
         final result = await network.send( request: apiRequest,
-        responseFromMap: (map) => ${FEATURE_NAME_PASCAL}Response.fromMap(map));
+                responseFromMap: (map) => ${FEATURE_NAME_PASCAL}Response.fromJson(map));
         return result;
     }
