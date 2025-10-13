@@ -33,9 +33,11 @@ run_add_feature_mode() {
   FILE_DATA_MODULE_REPO_IMPL="$DATA_MODULE_REPO_PATH/${MODULE_NAME_SNAKE}_repository_impl.dart"
   DATA_MODELS_STATIC_PATH="$DATA_PATH/models"
   DATA_MODELS_FEATURE_PATH="$DATA_MODELS_STATIC_PATH/${FEATURE_NAME_SNAKE}"
-  FILE_DATA_FEATURE_REQUEST="$DATA_MODELS_FEATURE_PATH/${FEATURE_NAME_SNAKE}_request.dart"
-  FILE_DATA_FEATURE_REQUEST_MODEL="$DATA_MODELS_FEATURE_PATH/${FEATURE_NAME_SNAKE}_request_model.dart"
-  FILE_DATA_FEATURE_RESPONSE_MODEL="$DATA_MODELS_FEATURE_PATH/${FEATURE_NAME_SNAKE}_response_model.dart"
+  DATA_MODELS_REQUEST_PATH="$DATA_MODELS_FEATURE_PATH/request"
+  DATA_MODELS_RESPONSE_PATH="$DATA_MODELS_FEATURE_PATH/response"
+  FILE_DATA_FEATURE_REQUEST="$DATA_MODELS_REQUEST_PATH/${FEATURE_NAME_SNAKE}_request.dart"
+  FILE_DATA_FEATURE_REQUEST_MODEL="$DATA_MODELS_REQUEST_PATH/${FEATURE_NAME_SNAKE}_request_model.dart"
+  FILE_DATA_FEATURE_RESPONSE_MODEL="$DATA_MODELS_RESPONSE_PATH/${FEATURE_NAME_SNAKE}_response_model.dart"
   DATA_REMOTE_PATH="$DATA_PATH/remote_data_source"
   FILE_DATA_MODULE_REMOTE_SOURCE="$DATA_REMOTE_PATH/${MODULE_NAME_SNAKE}_remote_data_source.dart"
   DI_PATH="$BASE_PATH/di"
@@ -43,7 +45,7 @@ run_add_feature_mode() {
   DOMAIN_PATH="$BASE_PATH/Domain"
 
   # **FIX**: Ensure Entity paths are defined for Mode 2
-  DOMAIN_ENTITIES_PATH="$DOMAIN_PATH/entities"
+  DOMAIN_ENTITIES_PATH="$DOMAIN_PATH/entities/${FEATURE_NAME_SNAKE}"
   FILE_DOMAIN_FEATURE_ENTITY="$DOMAIN_ENTITIES_PATH/${FEATURE_NAME_SNAKE}_entity.dart"
 
   DOMAIN_MODULE_REPO_PATH="$DOMAIN_PATH/${MODULE_NAME_SNAKE}_repository"
@@ -63,7 +65,7 @@ run_add_feature_mode() {
 
   # --- **FIXED**: Create ALL Directories, including entities ---
   echo "Ensuring all necessary directories exist..."
-  mkdir -p "$DATA_MODULE_REPO_PATH" "$DATA_MODELS_FEATURE_PATH" "$DATA_REMOTE_PATH" "$DI_PATH" "$DOMAIN_MODULE_REPO_PATH" "$DOMAIN_FEATURE_USECASE_PATH" "$PRES_UI_SCREENS_PATH" "$PRES_UI_WIDGET_PATH" "$PRES_FEATURE_CUBIT_PATH" "$DOMAIN_ENTITIES_PATH"
+  mkdir -p "$DATA_MODULE_REPO_PATH" "$DATA_MODELS_REQUEST_PATH" "$DATA_MODELS_RESPONSE_PATH" "$DATA_REMOTE_PATH" "$DI_PATH" "$DOMAIN_MODULE_REPO_PATH" "$DOMAIN_FEATURE_USECASE_PATH" "$PRES_UI_SCREENS_PATH" "$PRES_UI_WIDGET_PATH" "$PRES_FEATURE_CUBIT_PATH" "$DOMAIN_ENTITIES_PATH"
   echo "Directories are ready."
   echo ""
 
@@ -88,15 +90,15 @@ run_add_feature_mode() {
   # (The rest of your script is correct and remains the same)
   echo "Modifying shared module files to add '$FEATURE_NAME_SNAKE'..."
   
-  NEW_MODEL_IMPORT_DOMAIN_REPO="import '../entities/${FEATURE_NAME_SNAKE}_entity.dart';
-  import '../../data/models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';"
-  NEW_MODEL_IMPORT_REPO_IMPL="import '../../Domain/entities/${FEATURE_NAME_SNAKE}_entity.dart';
-  import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_response_model.dart';
-  import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';"
-  NEW_MODEL_IMPORT_DATASOURCE="import '../../Domain/entities/${FEATURE_NAME_SNAKE}_entity.dart';
-  import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request.dart';
-  import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';
-  import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_response_model.dart';"
+  NEW_MODEL_IMPORT_DOMAIN_REPO="import '../entities/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_entity.dart';
+  import '../../data/models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request_model.dart';"
+  NEW_MODEL_IMPORT_REPO_IMPL="import '../../Domain/entities/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_entity.dart';
+  import '../models/${FEATURE_NAME_SNAKE}/response/${FEATURE_NAME_SNAKE}_response_model.dart';
+  import '../models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request_model.dart';"
+  NEW_MODEL_IMPORT_DATASOURCE="import '../../Domain/entities/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_entity.dart';
+  import '../models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request.dart';
+  import '../models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request_model.dart';
+  import '../models/${FEATURE_NAME_SNAKE}/response/${FEATURE_NAME_SNAKE}_response_model.dart';"
   NEW_DI_IMPORT="import '../Domain/${MODULE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase.dart';
   import '../presentation/cubits/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_cubit.dart';"
   NEW_ROUTER_IMPORT="import 'presentation/Ui/screens/${FEATURE_NAME_SNAKE}_screen_view.dart';"

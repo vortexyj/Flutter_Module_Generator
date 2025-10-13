@@ -2,8 +2,8 @@ import 'package:core/packages/dartz/dartz.dart';
 import 'package:failures/failures.dart';
 import '../../domain/${MODULE_NAME_SNAKE}_repository/${MODULE_NAME_SNAKE}_repository.dart';
 import '../remote_data_source/${MODULE_NAME_SNAKE}_remote_data_source.dart';
-import '../models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';
-import '../../domain/entities/${FEATURE_NAME_SNAKE}_entity.dart';
+import '../models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request_model.dart';
+import '../../domain/entities/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_entity.dart';
 // [Adding_new_model_import_here_dont_remove_this_command_!!!]
 
 class ${MODULE_NAME_PASCAL}RepositoryImpl implements ${MODULE_NAME_PASCAL}Repository {

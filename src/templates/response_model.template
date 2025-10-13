@@ -1,4 +1,4 @@
-import '../../../Domain/entities/${FEATURE_NAME_SNAKE}_entity.dart';
+import '../../../../Domain/entities/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_entity.dart';
 
 
 class ${FEATURE_NAME_PASCAL}Response extends ${FEATURE_NAME_PASCAL}Entity {

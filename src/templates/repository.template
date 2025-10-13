@@ -1,7 +1,7 @@
 import 'package:core/packages/dartz/dartz.dart';
 import 'package:failures/failures.dart';
-import '../entities/${FEATURE_NAME_SNAKE}_entity.dart';
-import '../../data/models/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_request_model.dart';
+import '../entities/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_entity.dart';
+import '../../data/models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request_model.dart';
 // [Adding_new_model_import_here_dont_remove_this_command_!!!]
 
 abstract class ${MODULE_NAME_PASCAL}Repository {
