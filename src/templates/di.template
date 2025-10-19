@@ -19,7 +19,7 @@ class ${MODULE_NAME_PASCAL}DI {
       ..registerFactory<${MODULE_NAME_PASCAL}RemoteDataSource>(
           () => ${MODULE_NAME_PASCAL}RemoteDataSourceImpl(network: di()))
       ..registerFactory<${MODULE_NAME_PASCAL}Repository>(() => ${MODULE_NAME_PASCAL}RepositoryImpl(
-            authRemoteDataSource: di(),
+            remoteDataSource: di(),
           ))
       ..registerFactory(() => ${FEATURE_NAME_PASCAL}UseCase(repository: di()))
       ..registerFactory(() => ${FEATURE_NAME_PASCAL}Cubit(di(),di()))

@@ -11,7 +11,7 @@ class ${FEATURE_NAME_PASCAL}UseCase
   ${FEATURE_NAME_PASCAL}UseCase({required this.repository});
   @override
   Future<Either<Failure, ${FEATURE_NAME_PASCAL}Entity>> call(${FEATURE_NAME_PASCAL}RequestModel requestModel) async {
-       Either<Failure, ${FEATURE_NAME_PASCAL}Entity> response = await repository.${FEATURE_NAME_SNAKE}(
+       Either<Failure, ${FEATURE_NAME_PASCAL}Entity> response = await repository.${FEATURE_NAME_CAMEL}(
       requestModel: requestModel,
     );
     return response;

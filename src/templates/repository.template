@@ -5,7 +5,7 @@ import '../../data/models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_re
 // [Adding_new_model_import_here_dont_remove_this_command_!!!]
 
 abstract class ${MODULE_NAME_PASCAL}Repository {
-  Future<Either<Failure, ${FEATURE_NAME_PASCAL}Entity>> ${FEATURE_NAME_SNAKE}(
+  Future<Either<Failure, ${FEATURE_NAME_PASCAL}Entity>> ${FEATURE_NAME_CAMEL}(
       {required ${FEATURE_NAME_PASCAL}RequestModel requestModel});
   // [Adding_new_repo_method_here_dont_remove_this_command_!!!]
 }
