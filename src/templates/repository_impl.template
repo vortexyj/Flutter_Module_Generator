@@ -12,10 +12,10 @@ class ${MODULE_NAME_PASCAL}RepositoryImpl implements ${MODULE_NAME_PASCAL}Reposi
   ${MODULE_NAME_PASCAL}RepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, ${FEATURE_NAME_PASCAL}Entity>> ${FEATURE_NAME_SNAKE}(
+  Future<Either<Failure, ${FEATURE_NAME_PASCAL}Entity>> ${FEATURE_NAME_CAMEL}(
       {required ${FEATURE_NAME_PASCAL}RequestModel requestModel}) async {
     try {
-      final response = await remoteDataSource.${FEATURE_NAME_SNAKE}(requestModel);
+      final response = await remoteDataSource.${FEATURE_NAME_CAMEL}(requestModel);
          return Right(response.result!);
     } on Exception catch (error) {
          return Left(FailureHandler(error).getExceptionFailure());

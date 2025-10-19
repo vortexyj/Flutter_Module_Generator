@@ -105,3 +105,15 @@ insert_after() {
     echo "     [ERROR] awk command failed."; rm -f "$tmp_file"; return 1;
   fi
 }
+
+# NEW: This function normalizes various user inputs into clean snake_case.
+# MainScreen -> main_screen
+# mainScreen -> main_screen
+# main screen -> main_screen
+normalize_to_snake_case() {
+  echo "$1" | \
+  sed 's/ /_/g' | \
+  sed -E 's/([a-z0-9])([A-Z])/\1_\2/g' | \
+  tr '[:upper:]' '[:lower:]' | \
+  sed 's/__/_/g'
+}

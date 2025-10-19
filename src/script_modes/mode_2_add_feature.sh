@@ -11,6 +11,7 @@ run_add_feature_mode() {
 
   echo "Enter the name for the NEW feature to add to '$MODULE_NAME_SNAKE':"
   read FEATURE_NAME_SNAKE
+  FEATURE_NAME_SNAKE=$(normalize_to_snake_case "$FEATURE_NAME_SNAKE")
   read -p "Does this new feature include a UI (Screen, Cubit, Router entry)? (y/n): " HAS_UI
 
   if [ -z "$FEATURE_NAME_SNAKE" ]; then echo "Error: New feature name cannot be empty."; exit 1; fi
@@ -120,8 +121,8 @@ import '../models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request_mo
   NEW_MODEL_IMPORT_DATASOURCE="import '../models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request.dart';
 import '../models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request_model.dart';
 import '../models/${FEATURE_NAME_SNAKE}/response/${FEATURE_NAME_SNAKE}_response.dart';"
-  NEW_REPO_METHOD="  Future<Either<Failure, ${FEATURE_NAME_PASCAL}Entity>> ${FEATURE_NAME_SNAKE}({required ${FEATURE_NAME_PASCAL}RequestModel requestModel});"
-  NEW_DATASOURCE_METHOD="  Future<${FEATURE_NAME_PASCAL}Response> ${FEATURE_NAME_SNAKE}(${FEATURE_NAME_PASCAL}RequestModel requestModel);"
+  NEW_REPO_METHOD="  Future<Either<Failure, ${FEATURE_NAME_PASCAL}Entity>> ${FEATURE_NAME_CAMEL}({required ${FEATURE_NAME_PASCAL}RequestModel requestModel});"
+  NEW_DATASOURCE_METHOD="  Future<${FEATURE_NAME_PASCAL}Response> ${FEATURE_NAME_CAMEL}(${FEATURE_NAME_PASCAL}RequestModel requestModel);"
   NEW_REPO_IMPL_METHOD=$(render_partial "${method_templates_dir}/repository_impl_method.template")
   NEW_DATASOURCE_IMPL_METHOD=$(render_partial "${method_templates_dir}/datasource_impl_method.template")
 

@@ -6,6 +6,7 @@ run_create_mode() {
   
   echo "Enter the name for the new Flutter Module (package, snake_case):"
   read MODULE_NAME_SNAKE
+  MODULE_NAME_SNAKE=$(normalize_to_snake_case "$MODULE_NAME_SNAKE")
 
   if [ -z "$MODULE_NAME_SNAKE" ]; then echo "Error: Module name cannot be empty."; exit 1; fi
   if [ -d "$MODULE_NAME_SNAKE" ]; then echo "Error: A directory named '$MODULE_NAME_SNAKE' already exists here."; exit 1; fi
@@ -60,6 +61,7 @@ EOM
 
   echo "Enter the name for the initial FEATURE (e.g., user_login):"
   read FEATURE_NAME_SNAKE
+  FEATURE_NAME_SNAKE=$(normalize_to_snake_case "$FEATURE_NAME_SNAKE")
 
   if [ -z "$FEATURE_NAME_SNAKE" ]; then echo "Error: Feature name cannot be empty."; exit 1; fi
   FEATURE_NAME_PASCAL=$(snake_to_pascal_case "$FEATURE_NAME_SNAKE")
@@ -68,7 +70,7 @@ EOM
   BASE_PATH="./lib"
   if [ ! -d "$BASE_PATH" ]; then echo "Error: '$BASE_PATH' directory not found inside '$PWD'."; exit 1; fi
 
-  # --- Define Paths and Filenames (with Entity) ---
+  # --- Define Paths and Filenames ---
   FILE_LIB_MODULE_MAIN="$BASE_PATH/${MODULE_NAME_SNAKE}.dart"
   FILE_LIB_MODULE_ROUTER="$BASE_PATH/${MODULE_NAME_SNAKE}_screen_router.dart"
   DATA_PATH="$BASE_PATH/data"
@@ -80,8 +82,8 @@ EOM
   DATA_MODELS_RESPONSE_PATH="$DATA_MODELS_FEATURE_PATH/response"
   FILE_DATA_FEATURE_REQUEST="$DATA_MODELS_REQUEST_PATH/${FEATURE_NAME_SNAKE}_request.dart"
   FILE_DATA_FEATURE_REQUEST_MODEL="$DATA_MODELS_REQUEST_PATH/${FEATURE_NAME_SNAKE}_request_model.dart"
-  FILE_DATA_FEATURE_RESPONSE_MODEL="$DATA_MODELS_RESPONSE_PATH/${FEATURE_NAME_SNAKE}_response_model.dart"
   FILE_DATA_FEATURE_RESPONSE="$DATA_MODELS_RESPONSE_PATH/${FEATURE_NAME_SNAKE}_response.dart"
+  FILE_DATA_FEATURE_RESPONSE_MODEL="$DATA_MODELS_RESPONSE_PATH/${FEATURE_NAME_SNAKE}_response_model.dart"
   DATA_REMOTE_PATH="$DATA_PATH/remote_data_source"
   FILE_DATA_MODULE_REMOTE_SOURCE="$DATA_REMOTE_PATH/${MODULE_NAME_SNAKE}_remote_data_source.dart"
   DI_PATH="$BASE_PATH/di"
@@ -104,9 +106,10 @@ EOM
   FILE_PRES_FEATURE_CUBIT="$PRES_FEATURE_CUBIT_PATH/${FEATURE_NAME_SNAKE}_cubit.dart"
   FILE_PRES_FEATURE_CUBIT_STATE="$PRES_FEATURE_CUBIT_PATH/${FEATURE_NAME_SNAKE}_state.dart"
 
-  # --- Create Directory Structure (with Entity) ---
+  # --- **FIXED**: Create ALL Directory Structures ---
   echo "Creating directories..."
-  mkdir -p "$DATA_MODULE_REPO_PATH" "$DATA_MODELS_REQUEST_PATH" "$DATA_MODELS_RESPONSE_PATH" "$DATA_REMOTE_PATH" "$DI_PATH" "$DOMAIN_MODULE_REPO_PATH" "$DOMAIN_FEATURE_USECASE_PATH" "$PRES_UI_SCREENS_PATH" "$PRES_UI_WIDGET_PATH" "$PRES_FEATURE_CUBIT_PATH" "$DOMAIN_ENTITIES_PATH"  echo "Directories created."
+  mkdir -p "$DATA_MODULE_REPO_PATH" "$DATA_MODELS_REQUEST_PATH" "$DATA_MODELS_RESPONSE_PATH" "$DATA_REMOTE_PATH" "$DI_PATH" "$DOMAIN_MODULE_REPO_PATH" "$DOMAIN_FEATURE_USECASE_PATH" "$PRES_UI_SCREENS_PATH" "$PRES_UI_WIDGET_PATH" "$PRES_FEATURE_CUBIT_PATH" "$DOMAIN_ENTITIES_PATH"
+  echo "Directories created."
   echo ""
 
   # --- Create Files by Rendering Templates ---
@@ -114,6 +117,7 @@ EOM
   
   local templates_dir="${SCRIPT_DIR}/src/templates"
   
+  # **FIXED**: Unconditional file creation
   render_template "${templates_dir}/lib_main.template"           "$FILE_LIB_MODULE_MAIN"
   render_template "${templates_dir}/router.template"             "$FILE_LIB_MODULE_ROUTER"
   render_template "${templates_dir}/repository.template"         "$FILE_DOMAIN_MODULE_REPO"
@@ -122,18 +126,15 @@ EOM
   render_template "${templates_dir}/di.template"                 "$FILE_DI_MODULE_MAIN"
   render_template "${templates_dir}/request.template"            "$FILE_DATA_FEATURE_REQUEST"
   render_template "${templates_dir}/request_model.template"      "$FILE_DATA_FEATURE_REQUEST_MODEL"
-  render_template "${templates_dir}/response_model.template"     "$FILE_DATA_FEATURE_RESPONSE_MODEL"
   render_template "${templates_dir}/response.template"           "$FILE_DATA_FEATURE_RESPONSE"
-  render_template "${templates_dir}/domain_entity.template"      "$FILE_DOMAIN_FEATURE_ENTITY"
+  render_template "${templates_dir}/response_model.template"     "$FILE_DATA_FEATURE_RESPONSE_MODEL"
+  render_template "${templates_dir}/entity.template"             "$FILE_DOMAIN_FEATURE_ENTITY"
   render_template "${templates_dir}/usecase.template"            "$FILE_DOMAIN_FEATURE_USECASE"
   render_template "${templates_dir}/state.template"              "$FILE_PRES_FEATURE_CUBIT_STATE"
   render_template "${templates_dir}/cubit.template"              "$FILE_PRES_FEATURE_CUBIT"
   
-  # --- Special Handling for Screen View with AI Integration ---
-  # Call the centralized AI function to get the UI body code (either from AI or a default).
+  # Special Handling for Screen View with AI Integration
   UI_BODY_CODE=$(run_ai_generation "$FEATURE_NAME_PASCAL")
-
-  # Now, render the view template, which will use the UI_BODY_CODE variable.
   render_template "${templates_dir}/view.template" "$FILE_PRES_FEATURE_SCREEN_VIEW"
   
   echo ""
