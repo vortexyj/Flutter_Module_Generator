@@ -1,0 +1,15 @@
+import 'package:core/core.dart';
+import '../../../../domain/entities/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_entity.dart';
+import './${FEATURE_NAME_SNAKE}_response_model.dart';
+
+class ${FEATURE_NAME_PASCAL}Response extends ResponseModel<${FEATURE_NAME_PASCAL}Entity> {
+  ${FEATURE_NAME_PASCAL}Response({
+    super.result,
+    super.message,
+    super.statusCode,
+    super.statusName,
+  });
+
+  ${FEATURE_NAME_PASCAL}Response.fromJson(Map<String, dynamic> json)
+      : super.fromJson(json, (data) => ${FEATURE_NAME_PASCAL}ResponseModel.fromJson(data));
+}
