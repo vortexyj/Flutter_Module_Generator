@@ -1,15 +1,16 @@
 import '../../../../Domain/entities/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_entity.dart';
 
+class ${FEATURE_NAME_PASCAL}ResponseModel extends ${FEATURE_NAME_PASCAL}Entity {
+  const ${FEATURE_NAME_PASCAL}ResponseModel();
 
-class ${FEATURE_NAME_PASCAL}Response extends ${FEATURE_NAME_PASCAL}Entity {
-  
-  const ${FEATURE_NAME_PASCAL}Response();
-
-  factory ${FEATURE_NAME_PASCAL}Response.fromMap(Map<String, dynamic> map) {
-    return const ${FEATURE_NAME_PASCAL}Response();
+  factory ${FEATURE_NAME_PASCAL}ResponseModel.fromJson(Map<String, dynamic> json) {
+    return const ${FEATURE_NAME_PASCAL}ResponseModel(
+      // Properties from Entity will be parsed here
+    );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
+    // Properties from Entity will be serialized here
     return {};
   }
 }

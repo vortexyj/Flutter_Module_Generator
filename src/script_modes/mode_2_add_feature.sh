@@ -39,11 +39,12 @@ run_add_feature_mode() {
   FILE_DATA_FEATURE_REQUEST="$DATA_MODELS_REQUEST_PATH/${FEATURE_NAME_SNAKE}_request.dart"
   FILE_DATA_FEATURE_REQUEST_MODEL="$DATA_MODELS_REQUEST_PATH/${FEATURE_NAME_SNAKE}_request_model.dart"
   FILE_DATA_FEATURE_RESPONSE_MODEL="$DATA_MODELS_RESPONSE_PATH/${FEATURE_NAME_SNAKE}_response_model.dart"
+  FILE_DATA_FEATURE_RESPONSE="$DATA_MODELS_RESPONSE_PATH/${FEATURE_NAME_SNAKE}_response.dart"
   DATA_REMOTE_PATH="$DATA_PATH/remote_data_source"
   FILE_DATA_MODULE_REMOTE_SOURCE="$DATA_REMOTE_PATH/${MODULE_NAME_SNAKE}_remote_data_source.dart"
   DI_PATH="$BASE_PATH/di"
   FILE_DI_MODULE_MAIN="$DI_PATH/${MODULE_NAME_SNAKE}_di.dart"
-  DOMAIN_PATH="$BASE_PATH/Domain"
+  DOMAIN_PATH="$BASE_PATH/domain"
 
   # **FIX**: Ensure Entity paths are defined for Mode 2
   DOMAIN_ENTITIES_PATH="$DOMAIN_PATH/entities/${FEATURE_NAME_SNAKE}"
@@ -84,6 +85,7 @@ run_add_feature_mode() {
   render_template "${templates_dir}/request.template"          "$FILE_DATA_FEATURE_REQUEST"
   render_template "${templates_dir}/request_model.template"    "$FILE_DATA_FEATURE_REQUEST_MODEL"
   render_template "${templates_dir}/response_model.template"   "$FILE_DATA_FEATURE_RESPONSE_MODEL"
+  render_template "${templates_dir}/response.template"         "$FILE_DATA_FEATURE_RESPONSE"
   render_template "${templates_dir}/usecase.template"          "$FILE_DOMAIN_FEATURE_USECASE"
   if [[ "$HAS_UI" == "y" || "$HAS_UI" == "Y" ]]; then
   render_template "${templates_dir}/state.template"            "$FILE_PRES_FEATURE_CUBIT_STATE"
@@ -115,12 +117,11 @@ run_add_feature_mode() {
 import '../../data/models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request_model.dart';"
   NEW_MODEL_IMPORT_REPO_IMPL="import '../../domain/entities/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_entity.dart';
 import '../models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request_model.dart';"
-  NEW_MODEL_IMPORT_DATASOURCE="import '../../domain/entities/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_entity.dart';
-import '../models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request.dart';
+  NEW_MODEL_IMPORT_DATASOURCE="import '../models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request.dart';
 import '../models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request_model.dart';
-import '../models/${FEATURE_NAME_SNAKE}/response/${FEATURE_NAME_SNAKE}_response_model.dart';"
+import '../models/${FEATURE_NAME_SNAKE}/response/${FEATURE_NAME_SNAKE}_response.dart';"
   NEW_REPO_METHOD="  Future<Either<Failure, ${FEATURE_NAME_PASCAL}Entity>> ${FEATURE_NAME_SNAKE}({required ${FEATURE_NAME_PASCAL}RequestModel requestModel});"
-  NEW_DATASOURCE_METHOD="  Future<${FEATURE_NAME_PASCAL}Entity> ${FEATURE_NAME_SNAKE}(${FEATURE_NAME_PASCAL}RequestModel requestModel);"
+  NEW_DATASOURCE_METHOD="  Future<${FEATURE_NAME_PASCAL}Response> ${FEATURE_NAME_SNAKE}(${FEATURE_NAME_PASCAL}RequestModel requestModel);"
   NEW_REPO_IMPL_METHOD=$(render_partial "${method_templates_dir}/repository_impl_method.template")
   NEW_DATASOURCE_IMPL_METHOD=$(render_partial "${method_templates_dir}/datasource_impl_method.template")
 

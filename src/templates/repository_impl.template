@@ -16,9 +16,9 @@ class ${MODULE_NAME_PASCAL}RepositoryImpl implements ${MODULE_NAME_PASCAL}Reposi
       {required ${FEATURE_NAME_PASCAL}RequestModel requestModel}) async {
     try {
       final response = await remoteDataSource.${FEATURE_NAME_SNAKE}(requestModel);
-      return Right(response);
+         return Right(response.result!);
     } on Exception catch (error) {
-      return Left(FailureHandler(error).getExceptionFailure());
+         return Left(FailureHandler(error).getExceptionFailure());
     }
   }
   // [Adding_new_repo_impl_method_here_dont_remove_this_command_!!!]
