@@ -9,13 +9,7 @@ class ${MODULE_NAME_PASCAL}ScreenRouter {
   static Route? onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       case ${FEATURE_NAME_PASCAL}ScreenView.id:
-        return PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-               ${FEATURE_NAME_PASCAL}ScreenView(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return AppAnimations.slideAnimation(animation, child);
-          },
-        );
+      return CustomPageRouter.createRoute(page:${FEATURE_NAME_PASCAL}ScreenView());
       // [Adding_new_router_case_here_dont_remove_this_command_!!!]
       default:
         return null; 
