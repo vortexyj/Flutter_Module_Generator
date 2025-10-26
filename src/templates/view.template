@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ui_components/ui_components.dart';
 import '../../cubits/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_cubit.dart';
 
-class ${FEATURE_NAME_PASCAL}ScreenView extends BaseView<${FEATURE_NAME_PASCAL}Cubit> {
+class ${FEATURE_NAME_PASCAL}ScreenView extends BaseView<${FEATURE_NAME_PASCAL}Cubit,${FEATURE_NAME_PASCAL}State> {
   static const String id = '/${FEATURE_NAME_PASCAL}ScreenView';
    ${FEATURE_NAME_PASCAL}ScreenView({super.key});
   @override

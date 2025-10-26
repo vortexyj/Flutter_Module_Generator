@@ -1,5 +1,6 @@
 import 'package:core/packages/dartz/dartz.dart';
 import 'package:failures/failures.dart';
+import 'package:core/core.dart';
 import '../../domain/${MODULE_NAME_SNAKE}_repository/${MODULE_NAME_SNAKE}_repository.dart';
 import '../remote_data_source/${MODULE_NAME_SNAKE}_remote_data_source.dart';
 import '../models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request_model.dart';
@@ -16,7 +17,7 @@ class ${MODULE_NAME_PASCAL}RepositoryImpl implements ${MODULE_NAME_PASCAL}Reposi
       {required ${FEATURE_NAME_PASCAL}RequestModel requestModel}) async {
     try {
       final response = await remoteDataSource.${FEATURE_NAME_CAMEL}(requestModel);
-         return Right(response.result!);
+         return ResponseHandler.handle(response);
     } on Exception catch (error) {
          return Left(FailureHandler(error).getExceptionFailure());
     }
