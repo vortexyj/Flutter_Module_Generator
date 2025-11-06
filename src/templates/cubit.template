@@ -1,16 +1,14 @@
 import 'package:core/core.dart';
 import 'package:core/packages/dartz/dartz.dart';
-import 'package:local_storage/local_storage.dart';
 import '../../../data/models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request_model.dart';
 import '../../../domain/entities/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_entity.dart';
 import '../../../domain/${MODULE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase.dart';
 part '${FEATURE_NAME_SNAKE}_state.dart';
 
 class ${FEATURE_NAME_PASCAL}Cubit extends BaseCubit<${FEATURE_NAME_PASCAL}State> {
-  final LocalStorage localStorage;
   final ${FEATURE_NAME_PASCAL}UseCase ${FEATURE_NAME_CAMEL}UseCase;
 
-${FEATURE_NAME_PASCAL}Cubit(this.localStorage, this.${FEATURE_NAME_CAMEL}UseCase)
+${FEATURE_NAME_PASCAL}Cubit(this.${FEATURE_NAME_CAMEL}UseCase)
       : super(const ${FEATURE_NAME_PASCAL}State());
   @override
   Future<void> initState() async {}

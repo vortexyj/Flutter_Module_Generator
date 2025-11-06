@@ -22,7 +22,7 @@ class ${MODULE_NAME_PASCAL}DI {
             remoteDataSource: di(),
           ))
       ..registerFactory(() => ${FEATURE_NAME_PASCAL}UseCase(repository: di()))
-      ..registerFactory(() => ${FEATURE_NAME_PASCAL}Cubit(di(),di()))
+      ..registerFactory(() => ${FEATURE_NAME_PASCAL}Cubit(di()))
       // [Adding_new_di_dependency_here_dont_remove_this_command_!!!]
       ;
   }
