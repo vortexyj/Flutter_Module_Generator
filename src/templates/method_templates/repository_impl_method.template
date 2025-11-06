@@ -3,7 +3,7 @@
     {
         try {
             final response = await remoteDataSource.${FEATURE_NAME_CAMEL}(requestModel);
-                 return ResponseHandler.handle(response);
+                 return DAppRight.handle(response);
             } on Exception catch (error) {
                  return Left(FailureHandler(error).getExceptionFailure());
         }

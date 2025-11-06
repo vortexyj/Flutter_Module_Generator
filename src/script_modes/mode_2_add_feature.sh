@@ -144,7 +144,7 @@ import '../models/${FEATURE_NAME_SNAKE}/response/${FEATURE_NAME_SNAKE}_response.
     NEW_DI_IMPORT="import '../domain/${MODULE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase/${FEATURE_NAME_SNAKE}_usecase.dart';
 import '../presentation/cubits/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_cubit.dart';"
     NEW_DI_DEPENDENCY="..registerFactory(() => ${FEATURE_NAME_PASCAL}UseCase(repository: di()))
-       ..registerFactory(() => ${FEATURE_NAME_PASCAL}Cubit(di(), di()))"
+       ..registerFactory(() => ${FEATURE_NAME_PASCAL}Cubit(di()))"
     NEW_ROUTER_IMPORT="import 'presentation/Ui/screens/${FEATURE_NAME_SNAKE}_screen_view.dart';"
     NEW_SCREEN_ID="  static const String ${FEATURE_NAME_CAMEL}Screen = ${FEATURE_NAME_PASCAL}ScreenView.id;"
     NEW_ROUTE_CASE=$(render_partial "${method_templates_dir}/router_case.template")
