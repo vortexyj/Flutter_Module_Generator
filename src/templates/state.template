@@ -8,7 +8,7 @@ class ${FEATURE_NAME_PASCAL}State extends BaseState {
   ${FEATURE_NAME_PASCAL}State copyWith({Failure? failure, PageState? pageState, ${FEATURE_NAME_PASCAL}Entity? featureData}) {
     return ${FEATURE_NAME_PASCAL}State(
       failure: failure ?? super.failure,
-      pageState: pageState ?? this.pageState,
+      pageState: pageState ?? super.pageState,
       featureData: featureData ?? this.featureData,
     );
   }
