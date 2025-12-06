@@ -1,0 +1,10 @@
+import 'package:core/core.dart';
+part '${FEATURE_NAME_SNAKE}_state.dart';
+
+class ${FEATURE_NAME_PASCAL}Cubit extends BaseCubit<${FEATURE_NAME_PASCAL}State> {
+
+  ${FEATURE_NAME_PASCAL}Cubit() : super(const ${FEATURE_NAME_PASCAL}State());
+
+  @override
+  Future<void> initState() async {}
+}

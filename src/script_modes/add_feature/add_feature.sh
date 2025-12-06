@@ -15,7 +15,14 @@ run_add_feature_mode() {
   echo "Enter the name for the NEW feature to add to '$MODULE_NAME_SNAKE':"
   read FEATURE_NAME_SNAKE
   FEATURE_NAME_SNAKE=$(normalize_to_snake_case "$FEATURE_NAME_SNAKE")
-  read -p "Does this new feature include a UI (Screen, Cubit, Router entry)? (y/n): " HAS_UI
+  echo "Select the type of feature to add:"
+  echo "  1) Full Feature (Data + Domain + Presentation)"
+  echo "  2) Logic Only (Data + Domain)"
+  echo "  3) UI Only (Presentation)"
+  read -p "Enter your choice (1-3): " FEATURE_TYPE
+
+  # Default to 1 if empty
+  if [ -z "$FEATURE_TYPE" ]; then FEATURE_TYPE="1"; fi
 
   if [ -z "$FEATURE_NAME_SNAKE" ]; then echo "Error: New feature name cannot be empty."; exit 1; fi
   
@@ -29,13 +36,13 @@ run_add_feature_mode() {
   define_module_paths "$MODULE_NAME_SNAKE" "$FEATURE_NAME_SNAKE" "$BASE_PATH"
 
   # 2. Create Directories
-  create_feature_directories "$HAS_UI"
+  create_feature_directories "$FEATURE_TYPE"
 
   # 3. Generate Files
-  generate_feature_files "$HAS_UI"
+  generate_feature_files "$FEATURE_TYPE"
 
   # 4. Modify Shared Files
-  modify_shared_files "$HAS_UI"
+  modify_shared_files "$FEATURE_TYPE"
 
   echo ""
   echo "✅ New feature '$FEATURE_NAME_SNAKE' added successfully to module '$MODULE_NAME_SNAKE'."
