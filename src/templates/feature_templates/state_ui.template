@@ -1,0 +1,15 @@
+part of '${FEATURE_NAME_SNAKE}_cubit.dart';
+
+class ${FEATURE_NAME_PASCAL}State extends BaseState {
+  const ${FEATURE_NAME_PASCAL}State({super.failure, super.pageState});
+
+  @override
+  ${FEATURE_NAME_PASCAL}State copyWith({Failure? failure, PageState? pageState}) {
+    return ${FEATURE_NAME_PASCAL}State(
+      failure: failure ?? super.failure,
+      pageState: pageState ?? super.pageState,
+    );
+  }
+  @override
+  List<Object?> get props => [pageState, failure];
+}

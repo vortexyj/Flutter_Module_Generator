@@ -6,8 +6,14 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 # Source (include) our other script files from their new locations.
 source "${SCRIPT_DIR}/src/functions.sh"
 source "${SCRIPT_DIR}/src/ai_integration.sh"
-source "${SCRIPT_DIR}/src/script_modes/mode_1_create_module.sh"
-source "${SCRIPT_DIR}/src/script_modes/mode_2_add_feature.sh"
+source "${SCRIPT_DIR}/src/utils/paths.sh"
+source "${SCRIPT_DIR}/src/script_modes/create_module/create_module.sh"
+source "${SCRIPT_DIR}/src/script_modes/add_feature/add_feature.sh"
+source "${SCRIPT_DIR}/src/utils/project_scanner.sh"
+
+# --- Check Context ---
+check_context
+
 
 # --- Main Menu ---
 echo "Flutter Module & Feature Scaffolder"
@@ -21,6 +27,10 @@ read -p "Enter your choice (1 or 2): " SCRIPT_MODE
 if [ "$SCRIPT_MODE" == "1" ]; then
   run_create_mode # This function is in 'src/script_modes/mode_1_create_module.sh'
 elif [ "$SCRIPT_MODE" == "2" ]; then
+  if [ "$SCRIPT_CONTEXT" == "OTHER" ]; then
+    echo "Error: You must be in a Flutter Project Root or Module to add a feature."
+    exit 1
+  fi
   run_add_feature_mode # This function is in 'src/script_modes/mode_2_add_feature.sh'
 else
   echo "Invalid choice. Exiting."
