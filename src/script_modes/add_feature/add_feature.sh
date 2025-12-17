@@ -1,13 +1,52 @@
 #!/bin/bash
 
 # Source the tools
+# Source the tools
 source "${SCRIPT_DIR}/src/script_modes/add_feature/tools/feature_tools.sh"
 
 run_add_feature_mode() {
   echo ""
   echo "--- Mode 2: Add New Feature to Existing Module ---"
 
-  MODULE_NAME_SNAKE=$(basename "$PWD")
+  if [ "$SCRIPT_CONTEXT" == "ROOT" ]; then
+    echo "You are in the Project Root. Scanning for modules..."
+    MODULES=$(find_modules)
+    
+    if [ -z "$MODULES" ]; then
+      echo "No modules found in this project."
+      exit 1
+    fi
+    
+    echo "Found modules:"
+    # Convert newline-separated string to array
+    IFS=$'\n' read -rd '' -a MODULE_ARRAY <<< "$MODULES"
+    
+    i=1
+    for module in "${MODULE_ARRAY[@]}"; do
+      echo "  $i) $module"
+      ((i++))
+    done
+    
+    read -p "Select a module to add a feature to (1-$(($i-1))): " MODULE_CHOICE
+    
+    # Validate choice
+    if ! [[ "$MODULE_CHOICE" =~ ^[0-9]+$ ]] || [ "$MODULE_CHOICE" -lt 1 ] || [ "$MODULE_CHOICE" -ge "$i" ]; then
+      echo "Invalid selection."
+      exit 1
+    fi
+    
+    # Get selected module name (adjust for 0-based array index)
+    SELECTED_MODULE="${MODULE_ARRAY[$((MODULE_CHOICE-1))]}"
+    
+    echo "Selected module: $SELECTED_MODULE"
+    cd "$SELECTED_MODULE"
+    MODULE_NAME_SNAKE=$(basename "$PWD")
+    
+  else
+    # Already in a module
+    MODULE_NAME_SNAKE=$(basename "$PWD")
+  fi
+
   echo "Operating in module: $MODULE_NAME_SNAKE"
 
   # if [ ! -f "pubspec.yaml" ] || [ ! -d "lib" ]; then echo "Error: This does not appear to be the root of a Flutter module."; exit 1; fi
