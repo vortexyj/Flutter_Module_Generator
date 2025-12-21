@@ -41,8 +41,6 @@ update_pubspec_and_clean() {
     path: ../ui_components
   local_storage:
     path: ../local_storage
-  el_magico:
-    path: ../el_magico
 EOM
 
   insert_after "$pubspec_file" "sdk: flutter" "$DEPENDENCIES"
