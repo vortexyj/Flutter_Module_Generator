@@ -1,153 +1,79 @@
-# Flutter Module & Feature Scaffolding Script (`flutter_module_creator.sh`)
+# Flutter Module & Feature Scaffolding Tool
 
-This script automates the creation of a new Flutter module (as a separate package) and scaffolds an initial feature structure within it. The generated structure follows our team's preferred clean architecture conventions.
+This tool automates the creation of a new Flutter module (as a separate package) and scaffolds an initial feature structure within it, following clean architecture conventions.
+It has been rewritten in **Python** for better maintainability and extensibility.
 
-## 1. What This Script Does
+## 1. Features
 
-This script will:
-* Create a new Flutter package for your module using `flutter create --template=package [ModuleName]`.
-* Set up standard clean architecture layers:
-    * **Data Layer:** Models, repository implementations, remote data source.
-    * **Domain Layer:** Repository interfaces, use cases.
-    * **Presentation Layer:** Cubits, states, screen views (UI).
-* Include boilerplate for:
-    * Dependency Injection (DI) setup using GetIt.
-    * Basic screen routing for the module.
-* Customize generated code based on two inputs: a **Module Name** and a **Feature Name**.
-
-This aims to save significant boilerplate time and ensure consistency across new modules.
+- **Create New Module**: Generates a new Flutter package with standard Clean Architecture layers (Data, Domain, Presentation).
+- **Add Feature**: Adds a new feature (Full, Logic Only, or UI Only) to an existing module.
+- **AI Integration**: Optionally generates UI code using Google's Gemini AI.
+- **Clean Architecture**: Automatically sets up repositories, use cases, cubits, and dependency injection.
 
 ## 2. Prerequisites
 
-Before using this script, ensure you have:
+- **Python 3.6+**: Ensure Python is installed (`python3 --version`).
+- **Flutter SDK**: Installed and configured in your `PATH`.
+- **Gemini API Key (Optional)**: Set the `GEMINI_API_KEY` environment variable to use AI features.
 
-* **macOS:** This guide and script have been developed and tested on macOS.
-* **Flutter SDK:** Installed and correctly configured in your system's `PATH`. You should be able to run `flutter doctor` in your terminal without issues.
-* **Zsh Shell:** This is the default shell on newer macOS versions. The setup instructions use `~/.zshrc` for configuration.
-    * **Note for Bash users:** If you use Bash, you'll need to edit `~/.bash_profile` or `~/.bashrc` instead of `~/.zshrc`. The `export PATH` command itself is the same.Add commentMore actions
+## 3. Setup
 
-## 3. One-Time Setup (To Run the Script from Anywhere)
+### 3.1. Make Runnable (Optional)
+You can run the script directly with Python, or make it executable:
 
-To make the script easily accessible from any location in your terminal, follow these one-time setup steps on your Mac.
+```bash
+chmod +x main.py
+```
 
-### 3.1. Get the Script
-* Obtain the `flutter_create_module.sh` file. (This `README.md` should ideally be in the same repository or location as the script).
+### 3.2. Add to PATH (Optional)
+To run it from anywhere, add the project directory to your shell's PATH, or create an alias.
 
-### 3.2. Create a Personal Scripts Folder
-This is a standard place to keep your command-line scripts.
-1.  Open **Terminal**.
-2.  Type:
+For Zsh (`~/.zshrc`):
+```bash
+alias flutter_creator="python3 /path/to/flutter_module_creator/main.py"
+```
+
+## 4. Usage
+
+### Run the Tool
+Navigate to your project folder (or anywhere if you set up an alias) and run:
+
+```bash
+# Direct execution
+python3 main.py
+
+# Or if you made it executable
+./main.py
+
+# Or via alias
+flutter_creator
+```
+
+### Modes
+1.  **Create a new Module and its first Feature**:
+    - Creates a new Flutter package.
+    - Sets up the directory structure.
+    - Generates initial boilerplate code.
+2.  **Add a new Feature to an existing Module**:
+    - Scans for existing modules (if run from root).
+    - Adds new directories and files for the feature.
+    - Automatically updates `di.dart`, `router.dart`, and repositories to include the new feature.
+
+## 5. Generated Structure
+
+The tool creates the following structure inside `lib/`:
+
+- **`data/`**: Models, Remote Data Source, Repository Implementation.
+- **`domain/`**: Entities, Repository Interface, Use Cases.
+- **`presentation/`**: Cubits, States, CI Screens.
+- **`di/`**: Dependency Injection setup.
+
+## 6. AI Integration
+
+To use the AI UI generation feature:
+1.  Get an API key from [Google AI Studio](https://aistudio.google.com/).
+2.  Export it in your terminal:
     ```bash
-    mkdir -p ~/bin
+    export GEMINI_API_KEY="your_api_key_here"
     ```
-    *(The `-p` flag ensures it doesn't show an error if the folder already exists).*
-
-### 3.3. Move the Script into `~/bin`
-1.  Assuming the script `flutter_create_module.sh` is in the current directory (e.g., you've cloned this repository), type in Terminal:
-    ```bash
-    mv flutter_create_module.sh ~/bin/
-    ```
-    *(If it's elsewhere, adjust the source path accordingly).*
-
-### 3.4. Make the Script Executable
-1.  In Terminal, type:
-    ```bash
-    chmod +x ~/bin/flutter_create_module/flutter_create_module.sh
-    ```
-
-### 3.5. Add Your `~/bin` Folder to Your Shell's `PATH`
-This allows your terminal to find the script.
-1.  In Terminal, type:
-    ```bash
-    nano ~/.zshrc
-    ```
-2.  Use the arrow keys to scroll to the very **end** of the file.
-3.  Add the following exact line as a new line at the end:
-    ```
-    export PATH="$HOME/bin/flutter_create_module:$PATH"
-    ```
-4.  **Save and Exit `nano`**:
-    * Press `Ctrl + O` (the letter "O").
-    * Press `Enter` (to confirm the filename).
-    * Press `Ctrl + X` (to exit nano).
-
-### 3.6. Apply the `PATH` Changes
-For the changes to take effect:
-* **EITHER** close your current Terminal window completely and open a brand new one.
-* **OR** in your existing Terminal window, type:
-    ```bash
-    source ~/.zshrc
-    ```
-
-## 4. How to Use the Script
-
-Once the one-time setup is complete:
-
-1.  **Open Terminal.**
-2.  **Navigate to Your Projects Directory:**
-    Use the `cd` command to go to the parent folder where you want your *new module's folder* to be created.
-    * **Example:** If you want to create modules inside `~/development/my_apps/packages/`, type:
-        ```bash
-        cd ~/development/my_apps/packages/
-        ```
-3.  **Run the Script:**
-    Simply type the script's name:
-    ```bash
-    flutter_module_creator.sh
-    ```
-4.  **Follow the Prompts:**
-    * **Prompt 1 (Module Name):**
-        `Enter the name for the new Flutter Module (package, snake_case, e.g., auth_service):`
-        Type your desired module name (e.g., `user_profile_service`) and press Enter. **Use `snake_case`** (all lowercase, words separated by underscores).
-    * **Prompt 2 (Feature Name):**
-        `Enter the specific FEATURE name for the initial feature within '[YourModuleName]' (e.g., user_login, product_details):`
-        Type your desired feature name (e.g., `view_details` or `edit_form`) and press Enter. **Use `snake_case`**.
-5.  **Script Execution:**
-    The script will create a new folder with your module name in the current directory. Inside that, it will generate a `lib/` directory filled with the clean architecture structure for your specified module and feature.
-
-## 5. Quick Troubleshooting
-
-* **`zsh: command not found: flutter_create_module.sh`**
-    * **Likely Cause:** Terminal session hasn't picked up `PATH` changes.
-    * **Fix:** Close ALL terminal windows and open a new one. Or, run `source ~/.zshrc` in your current terminal.
-    * Verify you completed all steps in "3. One-Time Setup".
-    * Check if `flutter_create_module.sh` is in `~/bin` (`ls -l ~/bin`).
-    * Ensure no typos in the script name when running.
-
-* **`flutter: command not found` (error from the script)**
-    * Your Flutter SDK isn't correctly installed or configured in your system's PATH. Run `flutter doctor`. If it fails, fix your Flutter setup.
-
-* **`Error: A directory named '[ModuleName]' already exists here.`**
-    * A folder with the module name you entered already exists. Delete/move it or choose a different name.
-
-* **Permission errors when running the script:**
-    * You might have missed Step 3.4 (`chmod +x ...`). Re-run it on `~/bin/flutter_create_module/flutter_create_module.sh`.
-
-## 6. What Gets Created (Brief Overview)
-
-The script creates a new Flutter package (your module). Inside its `lib` folder, you'll find:
-* **`data/`**:
-    * `models/[feature_name]/` (for `_request.dart`, `_request_model.dart`, `_response_model.dart`)
-    * `[module_name]_repository/` (repository implementation)
-    * `remote_data_source/` (`[module_name]_remote_data_source.dart`)
-* **`domain/`**:
-    * `[module_name]_repository/` (repository interface)
-    * `[module_name]_usecase/[feature_name]_usecase/` (`[feature_name]_usecase.dart`)
-* **`presentation/`**:
-    * `Ui/screens/[feature_name]_screen_view.dart`
-    * `cubits/[feature_name]/` (`[feature_name]_cubit.dart`, `[feature_name]_state.dart`)
-* **`di/`**: `[module_name]_di.dart` for GetIt dependency setup.
-* **Root of `lib/`**:
-    * `[module_name].dart` (exports the module's router)
-    * `[module_name]_screen_router.dart` (basic screen router)
-
-Many generated Dart files include `// TODO:` comments to guide you on where to add your specific logic.
-
-## 7. Contributing / Further Development (Optional)
-
-* Ideas for improvements are welcome.
-* Feel free to fork this repository, make changes, and open a Pull Request.
-* Ensure any changes to the script are tested.
-* Update this `README.md` if script functionality changes.
-
----
+3.  When prompted during script execution, choose `y` to generate UI and describe what you want.
