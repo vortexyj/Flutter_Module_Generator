@@ -1,6 +1,5 @@
 import 'package:core/packages/dartz/dartz.dart';
-import 'package:core/usecase/usecase.dart';
-import 'package:failures/failures.dart';
+import 'package:core/core.dart';
 import '../../../data/models/${FEATURE_NAME_SNAKE}/request/${FEATURE_NAME_SNAKE}_request_model.dart';
 import '../../entities/${FEATURE_NAME_SNAKE}/${FEATURE_NAME_SNAKE}_entity.dart';
 import '../../${MODULE_NAME_SNAKE}_repository/${MODULE_NAME_SNAKE}_repository.dart';

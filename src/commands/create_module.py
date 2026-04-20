@@ -86,9 +86,7 @@ def update_pubspec_and_clean(module_name):
   ui_components:
     path: ../ui_components
   local_storage:
-    path: ../local_storage
-  el_magico:
-    path: ../el_magico"""
+    path: ../local_storage"""
 
     if insert_after(pubspec_file, "sdk: flutter", dependencies):
         print("     [SUCCESS] Dependencies added to pubspec.yaml.")

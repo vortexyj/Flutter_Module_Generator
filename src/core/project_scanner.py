@@ -13,7 +13,7 @@ def is_flutter_module():
     Checks if the current directory is a Flutter module/package.
     Criteria: Has pubspec.yaml AND lib folder.
     """
-    return os.path.exists("pubspec.yaml") and os.path.isdir("lib")
+    return os.path.isdir("lib")
 
 def find_modules():
     """
