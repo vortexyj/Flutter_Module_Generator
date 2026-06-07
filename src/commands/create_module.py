@@ -5,6 +5,7 @@ from src.core.project_scanner import get_script_context
 from src.core.template_engine import render_template
 from src.core.file_modifier import insert_after
 from src.core.ai_client import run_ai_generation
+from src.core.entity_json_step import run_entity_json_step
 from src.models.paths import ModulePaths
 
 def run_create_mode():
@@ -149,10 +150,13 @@ def generate_module_files(paths):
     render_template(os.path.join(templates_dir, "usecase.template"),            paths.file_domain_feature_usecase, context)
     render_template(os.path.join(templates_dir, "state.template"),              paths.file_pres_feature_cubit_state, context)
     render_template(os.path.join(templates_dir, "cubit.template"),              paths.file_pres_feature_cubit, context)
-    
+
+    # ── Optional: overwrite entity/response files from a JSON example ──────
+    run_entity_json_step(paths, base_path=paths.base_path)
+
     # Special Handling for Screen View with AI Integration
     ui_body_code = run_ai_generation(paths.feature_name_pascal)
     context_with_ai = paths.get_template_context(ui_body_code=ui_body_code)
     render_template(os.path.join(templates_dir, "view.template"), paths.file_pres_feature_screen_view, context_with_ai)
-    
+
     print("")

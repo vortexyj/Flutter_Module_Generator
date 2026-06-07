@@ -5,6 +5,7 @@ from src.core.project_scanner import get_script_context, find_modules
 from src.core.template_engine import render_template, render_partial
 from src.core.file_modifier import insert_before
 from src.core.ai_client import run_ai_generation
+from src.core.entity_json_step import run_entity_json_step
 from src.models.paths import ModulePaths
 
 def run_add_feature_mode():
@@ -114,6 +115,9 @@ def generate_feature_files(paths, feature_type):
         render_template(os.path.join(templates_dir, "response_model.template"),   paths.file_data_feature_response_model, context)
         render_template(os.path.join(templates_dir, "response.template"),         paths.file_data_feature_response, context)
         render_template(os.path.join(templates_dir, "usecase.template"),          paths.file_domain_feature_usecase, context)
+
+        # ── Optional: overwrite entity/response files from a JSON example ──
+        run_entity_json_step(paths, base_path=paths.base_path)
     
     # Type 1 (Full) or 3 (UI Only): Generate Presentation files
     if feature_type in ["1", "3"]:
